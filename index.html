@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Newton's Second Law Lab | Dr. M. Waseem</title>
+  <meta name="description" content="Explore Newton's second law using a block on an inclined plane connected to a hanging mass over a pulley.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='13' fill='%230b1220'/%3E%3Ccircle cx='43' cy='19' r='10' fill='none' stroke='%23f9c369' stroke-width='5'/%3E%3Cpath d='M7 51h37L14 26zM43 29v23' fill='none' stroke='%2362d9f5' stroke-width='5' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="modes.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="#">WASEEM PHYSICS</a>
+    <span class="course">A LEVEL PHYSICS / DYNAMICS</span>
+  </header>
+
+  <main>
+    <section class="tutoring-banner" aria-labelledby="tutoring-title">
+      <div>
+        <p class="eyebrow">ONLINE TUTORING</p>
+        <h2 id="tutoring-title">IGCSE &amp; A-Level Physics · GCSE Mathematics</h2>
+        <p>For online lessons and tutoring enquiries, contact Dr. M. Waseem.</p>
+      </div>
+      <a class="tutoring-contact" href="mailto:waseem.tutor@outlook.com">waseem.tutor@outlook.com ↗</a>
+    </section>
+
+    <div class="heading">
+      <div>
+        <p class="eyebrow">INTERACTIVE LAB 05</p>
+        <h1>Newton’s second law<span>.</span></h1>
+      </div>
+      <span class="state-badge" id="stateBadge">System at rest</span>
+    </div>
+
+    <section class="workspace">
+      <aside class="panel controls">
+        <p class="eyebrow">01 · SET THE SYSTEM</p>
+        <h2>Incline and pulley</h2>
+
+        <span class="control-label">Choose the system</span>
+        <div class="mode-switch" role="group" aria-label="Choose system configuration">
+          <button type="button" data-mode="single">Without pulley</button>
+          <button type="button" data-mode="pulley" class="active">With pulley</button>
+        </div>
+
+        <label for="angle">Incline angle, θ <output id="angleOut"></output></label>
+        <input id="angle" type="range" min="10" max="60" step="1" value="30">
+
+        <label for="mass1">Mass on incline, m₁ <output id="mass1Out"></output></label>
+        <input id="mass1" type="range" min="1" max="10" step="0.5" value="4">
+
+        <div id="mass2Control">
+          <label for="mass2">Hanging mass, m₂ <output id="mass2Out"></output></label>
+          <input id="mass2" type="range" min="1" max="10" step="0.5" value="3">
+        </div>
+
+        <label for="friction">Coefficient of friction, μ <output id="frictionOut"></output></label>
+        <input id="friction" type="range" min="0" max="0.6" step="0.01" value="0.10">
+        <p class="hint">This model uses the same value of μ for limiting and sliding friction.</p>
+
+        <label class="check"><input id="vectors" type="checkbox" checked> Show force arrows</label>
+
+        <div class="buttons">
+          <button id="play" class="primary">Release</button>
+          <button id="reset">Reset</button>
+        </div>
+      </aside>
+
+      <section class="panel simulation">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">02 · OBSERVE THE MOTION</p>
+            <h2>Connected particles</h2>
+          </div>
+          <span id="clock">t = 0.00 s</span>
+        </div>
+        <canvas id="systemCanvas" aria-label="Block on an inclined plane connected over a pulley to a hanging mass"></canvas>
+        <div class="result-grid">
+          <div><span>Acceleration</span><strong id="accRead"></strong></div>
+          <div id="tensionResult"><span>Tension</span><strong id="tensionRead"></strong></div>
+          <div><span>Normal force</span><strong id="normalRead"></strong></div>
+          <div><span>Friction</span><strong id="frictionRead"></strong></div>
+        </div>
+        <p class="explain" id="explain"></p>
+      </section>
+    </section>
+
+    <p class="eyebrow section-label">03 · APPLY ∑F = ma</p>
+    <section class="equation-grid">
+      <article class="panel equations">
+        <h2>Equations along the string</h2>
+        <div class="sign-box"><span>Positive direction</span><strong id="positiveDirection"></strong></div>
+        <div class="equation-row"><span id="eq1Label">For m₁:</span><strong id="eq1"></strong></div>
+        <div class="equation-row"><span id="eq2Label">For m₂:</span><strong id="eq2"></strong></div>
+        <div class="equation-result"><span>For the complete system:</span><strong id="eqTotal"></strong></div>
+        <p id="equationNote"></p>
+      </article>
+
+      <article class="panel force-summary">
+        <h2>Force comparison</h2>
+        <div id="hangingForceGroup">
+          <div class="force-row"><span>Hanging weight, m₂g</span><strong id="hangingWeight"></strong></div>
+          <div class="bar"><div id="hangingBar" class="gold"></div></div>
+        </div>
+        <div class="force-row"><span>Slope component, m₁g sinθ</span><strong id="slopeWeight"></strong></div>
+        <div class="bar"><div id="slopeBar" class="cyan"></div></div>
+        <div class="force-row"><span>Friction opposing motion</span><strong id="frictionForce"></strong></div>
+        <div class="bar"><div id="frictionBar" class="purple"></div></div>
+        <div class="net-force"><span>Resultant force</span><strong id="netForce"></strong></div>
+      </article>
+    </section>
+
+    <p class="eyebrow section-label">04 · FREE-BODY DIAGRAMS</p>
+    <section class="fbd-grid" id="fbdGrid">
+      <article class="panel fbd-card"><h2>Mass m₁ on the incline</h2><canvas id="fbd1" aria-label="Free-body diagram for the mass on the inclined plane"></canvas></article>
+      <article class="panel fbd-card" id="fbd2Card"><h2>Hanging mass m₂</h2><canvas id="fbd2" aria-label="Free-body diagram for the hanging mass"></canvas></article>
+    </section>
+
+    <footer>© 2026 Dr. M. Waseem</footer>
+  </main>
+</body>
+</html>
